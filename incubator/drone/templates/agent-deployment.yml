@@ -18,7 +18,7 @@ spec:
           - "agent"
         env:
           - name: "DRONE_SERVER"
-            value: ws://$(DRONE_SERVER_HOST):8000/ws/broker
+            value: ws://$(SERVER_SERVICE_HOST):$(SERVER_SERVICE_PORT)/ws/broker
           - name: "DRONE_SECRET"
             value: {{ .Values.drone.secret }}
         volumeMounts:
