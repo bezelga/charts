@@ -13,7 +13,9 @@ spec:
       - name: agent
         image: drone/drone:0.7
         imagePullPolicy: Always
-        command: ["agent"]
+        command:
+          - "/drone"
+          - "agent"
         env:
           - name: "DRONE_SERVER"
             value: ws://$(DRONE_SERVER_HOST):8000/ws/broker
