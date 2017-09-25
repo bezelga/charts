@@ -1,0 +1,51 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: server
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: server
+    spec:
+      containers:
+      - name: server
+        image: drone/drone:0.7
+        imagePullPolicy: Always
+        env:
+          - name: "DRONE_HOST"
+            value: {{ .Values.drone.host }}
+          - name: "DRONE_OPEN"
+            value: "true"
+          - name: "DRONE_GITHUB"
+            value: "true"
+          - name: "DRONE_GITHUB_CLIENT"
+            value: {{ .Values.drone.github.client }}
+          - name: "DRONE_GITHUB_SECRET"
+            value: {{ .Values.drone.github.secret }}
+          - name: "DRONE_SECRET"
+            value: {{ .Values.drone.secret }}
+        volumeMounts:
+        - mountPath: /var/lib/drone
+          name: lib-drone
+      volumes:
+      - name: lib-drone
+        hostPath:
+          # directory location on host
+          path: /var/lib/drone
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server
+  labels:
+    name: server
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  selector:
+    name: server

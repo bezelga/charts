@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Drone CI chart
+name: drone
+version: 0.1.0
